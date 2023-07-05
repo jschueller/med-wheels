@@ -46,6 +46,6 @@ auditwheel repair salome_med-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
 # test
 cd /tmp
-pip install med --pre --no-index -f /io/wheelhouse
+pip install salome_med --pre --no-index -f /io/wheelhouse
 python -c "import med; print('ok')"
 
