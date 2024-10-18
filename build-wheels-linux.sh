@@ -2,14 +2,14 @@
 
 set -e -x
 
-test $# = 2 || exit 1
+test $# = 1 || exit 1
 
 VERSION="$1"
-ABI="$2"
+ABI=cp39
 
 PLATFORM=manylinux2014_x86_64
 PYTAG=${ABI/m/}
-TAG=${PYTAG}-${ABI}-${PLATFORM}
+TAG=${PYTAG}-abi3-${PLATFORM}
 PYVERD=${ABI:2:1}.${ABI:3}
 
 SCRIPT=`readlink -f "$0"`
@@ -17,8 +17,8 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 
 cd /tmp
-curl -L https://files.salome-platform.org/Salome/other/med-${VERSION}.tar.gz | tar xz
-cd med-${VERSION}_SRC
+curl -fSsL https://www.code-saturne.org/releases/external/med-${VERSION}.tar.gz | tar xz
+cd med-${VERSION}*
 
 # we cannot link to python libs here
 sed -i "s|PYTHON_LIBRARIES|ZZZ|g" python/CMakeLists.txt
@@ -29,18 +29,21 @@ cmake -LAH -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install \
       -DPYTHON_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_INSTALL_RPATH="${PWD}/install/lib;/usr/local/lib" -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
       -DMEDFILE_BUILD_PYTHON=ON -DMEDFILE_BUILD_TESTS=OFF -DMEDFILE_INSTALL_DOC=OFF \
+      -DCMAKE_CXX_FLAGS="-DPy_LIMITED_API=0x03090000" \
       .
 make install
 
 cd install/lib/python*/site-packages/
 rm -rf med/__pycache__
+
+# write metadata
 mkdir salome_med-${VERSION}.dist-info
 sed "s|@PACKAGE_VERSION@|${VERSION}|g" ${SCRIPTPATH}/METADATA.in > salome_med-${VERSION}.dist-info/METADATA
-echo -e "Wheel-Version: 1.0" > salome_med-${VERSION}.dist-info/WHEEL
-for f in `find med salome_med-${VERSION}.dist-info -type f`; do echo "$f,," >> salome_med-${VERSION}.dist-info/RECORD ; done
+python ${SCRIPTPATH}/write_distinfo.py salome_med ${VERSION} ${TAG}
 
 # create archive
 zip -r salome_med-${VERSION}-${TAG}.whl med salome_med-${VERSION}.dist-info
+
 auditwheel show salome_med-${VERSION}-${TAG}.whl
 auditwheel repair salome_med-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 

@@ -1,6 +1,6 @@
 @echo on
 set VERSION=%1%
-set ABI=%2%
+set ABI=cp39
 set PY_VER=%ABI:~2,1%.%ABI:~3%
 
 echo "ABI=%ABI%"
@@ -10,21 +10,27 @@ echo "PATH=%PATH%"
 set PYTHON_ROOT=%pythonLocation%
 python --version
 
+:: swig
+curl -LO https://downloads.sourceforge.net/swig/swigwin/swigwin-4.2.1/swigwin-4.2.1.zip
+7z x swigwin-4.2.1.zip > nul
+set "PATH=%CD%\swigwin-4.2.1;%PATH%"
+
 :: hdf5
 git clone --depth 1 -b hdf5-1_10_3 https://github.com/HDFGroup/hdf5.git
 cmake -LAH -S hdf5 -B build_hdf5 -DCMAKE_INSTALL_PREFIX=C:/Libraries/hdf5 -DBUILD_TESTING=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_BUILD_EXAMPLES=OFF
 cmake --build build_hdf5 --config Release --target install
 
 :: med
-curl -LO https://files.salome-platform.org/Salome/other/med-%VERSION%.tar.gz
+curl -LO https://www.code-saturne.org/releases/external/med-%VERSION%.tar.gz
 7z x med-%VERSION%.tar.gz > nul
 dir /p
 7z x med-%VERSION%.tar > nul
 dir /p
 cmake -LAH -S med-%VERSION%_SRC -B build_med -DCMAKE_INSTALL_PREFIX=C:/Libraries/med -DHDF5_ROOT_DIR=C:/Libraries/hdf5 ^
   -DMEDFILE_BUILD_TESTS=OFF -DMEDFILE_INSTALL_DOC=OFF -DMEDFILE_BUILD_PYTHON=ON ^
-  -DPYTHON_LIBRARY=%PYTHON_ROOT%\libs\python%ABI:~2%.lib -DPYTHON_INCLUDE_DIR=%PYTHON_ROOT%\include ^
-  -DPYTHON_EXECUTABLE=%PYTHON_ROOT%\python.exe
+  -DPYTHON_LIBRARY=%PYTHON_ROOT%\libs\python3.lib -DPYTHON_INCLUDE_DIR=%PYTHON_ROOT%\include ^
+  -DPYTHON_EXECUTABLE=%PYTHON_ROOT%\python.exe ^
+  -DCMAKE_CXX_FLAGS="-DPy_LIMITED_API=0x03090000"
 cmake --build build_med --config Release --target install
 
 :: build wheel
@@ -42,7 +48,7 @@ type salome_med-%VERSION%.dist-info\METADATA
 echo Wheel-Version: 1.0 > salome_med-%VERSION%.dist-info\WHEEL
 echo salome_med-%VERSION%.dist-info\RECORD,, > salome_med-%VERSION%.dist-info\RECORD
 mkdir %GITHUB_WORKSPACE%\wheelhouse
-7z a -tzip %GITHUB_WORKSPACE%\wheelhouse\salome_med-%VERSION%-%ABI%-%ABI%-win_amd64.whl med salome_med-%VERSION%.dist-info
-pip install %GITHUB_WORKSPACE%\wheelhouse\salome_med-%VERSION%-%ABI%-%ABI%-win_amd64.whl
+7z a -tzip %GITHUB_WORKSPACE%\wheelhouse\salome_med-%VERSION%-%ABI%-abi3-win_amd64.whl med salome_med-%VERSION%.dist-info
+pip install %GITHUB_WORKSPACE%\wheelhouse\salome_med-%VERSION%-%ABI%-abi3-win_amd64.whl
 pushd %GITHUB_WORKSPACE%
 python -c "import med; print(42)"
