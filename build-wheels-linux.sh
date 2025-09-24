@@ -17,8 +17,8 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 
 cd /tmp
-curl -L https://files.salome-platform.org/Salome/other/med-${VERSION}.tar.gz | tar xz
-cd med-${VERSION}_SRC
+curl -fSsL https://files.salome-platform.org/Salome/medfile/med-${VERSION}.tar.gz | tar xz
+cd med-${VERSION}
 
 # we cannot link to python libs here
 sed -i "s|PYTHON_LIBRARIES|ZZZ|g" python/CMakeLists.txt

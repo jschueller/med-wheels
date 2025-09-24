@@ -16,12 +16,12 @@ cmake -LAH -S hdf5 -B build_hdf5 -DCMAKE_INSTALL_PREFIX=C:/Libraries/hdf5 -DBUIL
 cmake --build build_hdf5 --config Release --target install
 
 :: med
-curl -LO https://files.salome-platform.org/Salome/other/med-%VERSION%.tar.gz
+curl -LO https://files.salome-platform.org/Salome/medfile/med-%VERSION%.tar.gz
 7z x med-%VERSION%.tar.gz > nul
 dir /p
 7z x med-%VERSION%.tar > nul
 dir /p
-cmake -LAH -S med-%VERSION%_SRC -B build_med -DCMAKE_INSTALL_PREFIX=C:/Libraries/med -DHDF5_ROOT_DIR=C:/Libraries/hdf5 ^
+cmake -LAH -S med-%VERSION% -B build_med -DCMAKE_INSTALL_PREFIX=C:/Libraries/med -DHDF5_ROOT_DIR=C:/Libraries/hdf5 ^
   -DMEDFILE_BUILD_TESTS=OFF -DMEDFILE_INSTALL_DOC=OFF -DMEDFILE_BUILD_PYTHON=ON ^
   -DPYTHON_LIBRARY=%PYTHON_ROOT%\libs\python%ABI:~2%.lib -DPYTHON_INCLUDE_DIR=%PYTHON_ROOT%\include ^
   -DPYTHON_EXECUTABLE=%PYTHON_ROOT%\python.exe
