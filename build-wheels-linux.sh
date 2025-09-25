@@ -17,7 +17,8 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 
 cd /tmp
-curl -fSsL https://files.salome-platform.org/Salome/medfile/med-${VERSION}.tar.gz | tar xz
+#curl -fSsL https://files.salome-platform.org/Salome/medfile/med-${VERSION}.tar.gz | tar xz
+curl -fSsL https://files.catbox.moe/zm3to1.gz | tar xz
 cd med-${VERSION}
 
 # we cannot link to python libs here

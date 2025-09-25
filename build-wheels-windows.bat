@@ -16,7 +16,8 @@ cmake -LAH -S hdf5 -B build_hdf5 -DCMAKE_INSTALL_PREFIX=C:/Libraries/hdf5 -DBUIL
 cmake --build build_hdf5 --config Release --target install
 
 :: med
-curl -LO https://files.salome-platform.org/Salome/medfile/med-%VERSION%.tar.gz
+::curl -LO https://files.salome-platform.org/Salome/medfile/med-%VERSION%.tar.gz
+curl -L -o med-%VERSION%.tar.gz https://files.catbox.moe/zm3to1.gz
 7z x med-%VERSION%.tar.gz > nul
 dir /p
 7z x med-%VERSION%.tar > nul
