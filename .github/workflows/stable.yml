@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         version: [4.2.0]
-        abi: [cp38, cp39, cp310, cp311]
+        abi: [cp39, cp310, cp311, cp312]
     steps:
       - uses: actions/checkout@v4
       - name: Build
@@ -23,7 +23,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: wheelhouse/salome_med-${{ matrix.version }}-${{ matrix.abi }}-${{ matrix.abi }}-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+          files: wheelhouse/medfile-${{ matrix.version }}-${{ matrix.abi }}-${{ matrix.abi }}-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
       - name: Upload
         if: startsWith(github.ref, 'refs/tags/')
         shell: bash -l {0}
@@ -41,9 +41,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - abi: cp38
-            python-version: '3.8'
-            version: 4.2.0
           - abi: cp39
             python-version: '3.9'
             version: 4.2.0
@@ -52,6 +49,9 @@ jobs:
             version: 4.2.0
           - abi: cp311
             python-version: '3.11'
+            version: 4.2.0
+          - abi: cp312
+            python-version: '3.12'
             version: 4.2.0
 
     steps:
@@ -71,7 +71,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: wheelhouse/salome_med-${{ matrix.version }}-${{ matrix.abi }}-${{ matrix.abi }}-win_amd64.whl
+          files: wheelhouse/medfile-${{ matrix.version }}-${{ matrix.abi }}-${{ matrix.abi }}-win_amd64.whl
       - name: Upload
         if: startsWith(github.ref, 'refs/tags/')
         shell: bash -l {0}
