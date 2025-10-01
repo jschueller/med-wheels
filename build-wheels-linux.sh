@@ -24,6 +24,8 @@ cd med-${VERSION}
 # we cannot link to python libs here
 sed -i "s|PYTHON_LIBRARIES|ZZZ|g" python/CMakeLists.txt
 
+sed -i "s|PyEval_CallObject(pclass, pargs)|PyObject_Call(pclass, pargs, NULL)|g" python/med*.i
+
 # mkdir build && cd build
 cmake -LAH -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install \
       -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
