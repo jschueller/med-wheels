@@ -35,18 +35,18 @@ make install
 
 cd install/lib/python*/site-packages/
 rm -rf med/__pycache__
-mkdir salome_med-${VERSION}.dist-info
-sed "s|@PACKAGE_VERSION@|${VERSION}|g" ${SCRIPTPATH}/METADATA.in > salome_med-${VERSION}.dist-info/METADATA
-echo -e "Wheel-Version: 1.0" > salome_med-${VERSION}.dist-info/WHEEL
-for f in `find med salome_med-${VERSION}.dist-info -type f`; do echo "$f,," >> salome_med-${VERSION}.dist-info/RECORD ; done
+mkdir medfile-${VERSION}.dist-info
+sed "s|@PACKAGE_VERSION@|${VERSION}|g" ${SCRIPTPATH}/METADATA.in > medfile-${VERSION}.dist-info/METADATA
+echo -e "Wheel-Version: 1.0" > medfile-${VERSION}.dist-info/WHEEL
+for f in `find med medfile-${VERSION}.dist-info -type f`; do echo "$f,," >> medfile-${VERSION}.dist-info/RECORD ; done
 
 # create archive
-zip -r salome_med-${VERSION}-${TAG}.whl med salome_med-${VERSION}.dist-info
-auditwheel show salome_med-${VERSION}-${TAG}.whl
-auditwheel repair salome_med-${VERSION}-${TAG}.whl -w /io/wheelhouse/
+zip -r medfile-${VERSION}-${TAG}.whl med medfile-${VERSION}.dist-info
+auditwheel show medfile-${VERSION}-${TAG}.whl
+auditwheel repair medfile-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
 # test
 cd /tmp
-pip install salome_med --pre --no-index -f /io/wheelhouse
+pip install medfile --pre --no-index -f /io/wheelhouse
 python -c "import med; print('ok')"
 

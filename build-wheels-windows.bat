@@ -37,13 +37,13 @@ curl -LO https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Depend
 Dependencies.exe -modules C:\Libraries\med\lib\python%PY_VER%\site-packages\med\_medenum.pyd
 
 pushd C:\Libraries\med\lib\python%PY_VER%\site-packages
-mkdir salome_med-%VERSION%.dist-info
-sed "s|@PACKAGE_VERSION@|%VERSION%|g" %GITHUB_WORKSPACE%\METADATA.in > salome_med-%VERSION%.dist-info\METADATA
-type salome_med-%VERSION%.dist-info\METADATA
-echo Wheel-Version: 1.0 > salome_med-%VERSION%.dist-info\WHEEL
-echo salome_med-%VERSION%.dist-info\RECORD,, > salome_med-%VERSION%.dist-info\RECORD
+mkdir medfile-%VERSION%.dist-info
+sed "s|@PACKAGE_VERSION@|%VERSION%|g" %GITHUB_WORKSPACE%\METADATA.in > medfile-%VERSION%.dist-info\METADATA
+type medfile-%VERSION%.dist-info\METADATA
+echo Wheel-Version: 1.0 > medfile-%VERSION%.dist-info\WHEEL
+echo medfile-%VERSION%.dist-info\RECORD,, > medfile-%VERSION%.dist-info\RECORD
 mkdir %GITHUB_WORKSPACE%\wheelhouse
-7z a -tzip %GITHUB_WORKSPACE%\wheelhouse\salome_med-%VERSION%-%ABI%-%ABI%-win_amd64.whl med salome_med-%VERSION%.dist-info
-pip install %GITHUB_WORKSPACE%\wheelhouse\salome_med-%VERSION%-%ABI%-%ABI%-win_amd64.whl
+7z a -tzip %GITHUB_WORKSPACE%\wheelhouse\medfile-%VERSION%-%ABI%-%ABI%-win_amd64.whl med medfile-%VERSION%.dist-info
+pip install %GITHUB_WORKSPACE%\wheelhouse\medfile-%VERSION%-%ABI%-%ABI%-win_amd64.whl
 pushd %GITHUB_WORKSPACE%
 python -c "import med; print(42)"
