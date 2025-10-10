@@ -1,4 +1,4 @@
-Metadata-Version: 2.0
+Metadata-Version: 1.2
 Name: medfile
 Version: @PACKAGE_VERSION@
 Summary: Generic pre- and post-processing library for numerical simulation
