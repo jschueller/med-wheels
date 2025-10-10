@@ -22,4 +22,22 @@ Classifier: Intended Audience :: Developers
 Classifier: Intended Audience :: Information Technology
 Classifier: Intended Audience :: Science/Research
 
+MEDFile
+=======
+
 Generic pre- and post-processing library for numerical simulation from SALOME platform
+
+See `here <https://www.salome-platform.org/?page_id=2770>`_
+
+Installation from PyPI
+----------------------
+
+To install MEDFile, you can now simply do::
+
+    pip install -U medfile
+
+Binary wheels are available for 64-bit Windows (`win_amd64`) and Linux-like platforms (`manylinux2014_x86_64`).
+
+To ensure that MEDFile is well installed, try importing it with::
+
+    import med  # should not raise error
