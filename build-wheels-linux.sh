@@ -37,10 +37,11 @@ make install
 
 cd install/lib/python*/site-packages/
 rm -rf med/__pycache__
+
+# write metadata
 mkdir medfile-${VERSION}.dist-info
 sed "s|@PACKAGE_VERSION@|${VERSION}|g" ${SCRIPTPATH}/METADATA.in > medfile-${VERSION}.dist-info/METADATA
-echo -e "Wheel-Version: 1.0" > medfile-${VERSION}.dist-info/WHEEL
-for f in `find med medfile-${VERSION}.dist-info -type f`; do echo "$f,," >> medfile-${VERSION}.dist-info/RECORD ; done
+python ${SCRIPTPATH}/write_distinfo.py medfile ${VERSION} ${TAG}
 
 # create archive
 zip -r medfile-${VERSION}-${TAG}.whl med medfile-${VERSION}.dist-info

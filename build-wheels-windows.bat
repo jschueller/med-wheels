@@ -39,9 +39,8 @@ Dependencies.exe -modules C:\Libraries\med\lib\python%PY_VER%\site-packages\med\
 pushd C:\Libraries\med\lib\python%PY_VER%\site-packages
 mkdir medfile-%VERSION%.dist-info
 sed "s|@PACKAGE_VERSION@|%VERSION%|g" %GITHUB_WORKSPACE%\METADATA.in > medfile-%VERSION%.dist-info\METADATA
-type medfile-%VERSION%.dist-info\METADATA
-echo Wheel-Version: 1.0 > medfile-%VERSION%.dist-info\WHEEL
-echo medfile-%VERSION%.dist-info\RECORD,, > medfile-%VERSION%.dist-info\RECORD
+python %GITHUB_WORKSPACE%\write_distinfo.py medfile %VERSION% %ABI%-%ABI%-win_amd64
+
 mkdir %GITHUB_WORKSPACE%\wheelhouse
 7z a -tzip %GITHUB_WORKSPACE%\wheelhouse\medfile-%VERSION%-%ABI%-%ABI%-win_amd64.whl med medfile-%VERSION%.dist-info
 pip install %GITHUB_WORKSPACE%\wheelhouse\medfile-%VERSION%-%ABI%-%ABI%-win_amd64.whl
